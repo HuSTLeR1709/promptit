@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Profile = () => {
+const Profile = ({name, desc,data, handleEdit, handleDelete}) => {
   return (
-    <div>Profile</div>
+    <div>{name} {desc}</div>
   )
 }
 

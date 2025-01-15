@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+import type { Configuration } from 'webpack';
 const nextConfig = {
   experimental: {
     appDir: true,
@@ -7,7 +8,7 @@ const nextConfig = {
   images: {
     domains: ['lh3.googleusercontent.com'],
   },
-  webpack(config) {
+  webpack(config : Configuration) {
     config.experiments = {
       ...config.experiments,
       topLevelAwait: true,

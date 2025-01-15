@@ -1,20 +1,24 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import Form from "@components/Form";
+'use client';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import Form from '@components/Form';
 
 const EditPrompt = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  const searchParams = useSearchParams();
-  const promptId = searchParams.get("id");
-  const [post, setPost] = useState({
-    prompt: "",
-    tag: "",
-  });
   const [submitting, setSubmitting] = useState(false);
+  const [post, setPost] = useState({ prompt: '', tag: '' });
   const [isLoading, setIsLoading] = useState(true);
+
+  // Extract the `id` query parameter safely
+  const [promptId, setPromptId] = useState(null);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const id = url.searchParams.get('id');
+    setPromptId(id);
+  }, []);
 
   useEffect(() => {
     const getPromptDetails = async () => {
@@ -23,12 +27,9 @@ const EditPrompt = () => {
       try {
         const response = await fetch(`/api/prompt/${promptId}`);
         const data = await response.json();
-        setPost({
-          prompt: data.prompt,
-          tag: data.tag,
-        });
+        setPost({ prompt: data.prompt, tag: data.tag });
       } catch (error) {
-        console.error("Failed to fetch prompt details:", error);
+        console.error('Failed to fetch prompt details:', error);
       } finally {
         setIsLoading(false);
       }
@@ -43,7 +44,7 @@ const EditPrompt = () => {
 
     try {
       const response = await fetch(`/api/prompt/${promptId}`, {
-        method: "PATCH",
+        method: 'PATCH',
         body: JSON.stringify({
           prompt: post.prompt,
           tag: post.tag,
@@ -52,10 +53,10 @@ const EditPrompt = () => {
       });
 
       if (response.ok) {
-        router.push("/");
+        router.push('/');
       }
     } catch (error) {
-      console.error("Failed to update prompt:", error);
+      console.error('Failed to update prompt:', error);
     } finally {
       setSubmitting(false);
     }

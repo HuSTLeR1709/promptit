@@ -17,6 +17,7 @@ const EditPrompt = () => {
 
     useEffect(()=>{
         const getPromptDetails = async ()=> {
+            if (!promptId) return;
             const response = await fetch(`/api/prompt/${promptId}`)
             const data = await response.json();
 
@@ -54,7 +55,7 @@ const EditPrompt = () => {
 
     }
   return (
-    <Suspense>
+
         <Form
     type="Edit"
     post={post}
@@ -62,7 +63,7 @@ const EditPrompt = () => {
     submitting={submitting}
     handleSubmit={updatePrompt}
     ></Form>
-    </Suspense>
+
     
   )
 }
